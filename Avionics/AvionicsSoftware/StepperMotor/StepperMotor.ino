@@ -17,6 +17,12 @@ void setup() {
 void loop() {
   //reacts to the predicted apogee from runge-kutta method and moves in or out.
   //example method for constnatly adjusting motor using controller
+
+  // for case LAUNCHPAD
+  airbrakemotor.moveTo(0)  
+  airbrakemotor.run()
+  
+  // for case ASCENT
   long currentPos = airbrakemotor.currentPosition(); //current motor position
   long predictedApogee = calcApogee(); //calculated apogee
   long Error=predictedApogee-targetApogee; //error based on difference between predicted apogee and target apogee
@@ -25,4 +31,8 @@ void loop() {
   targetPos = constrain(targetPos,minposition,maxposition); //ensures the motor doesnt extend past its min/max position
   airbrakemotor.moveTo(targetPos); //tell motor to move to new position
   airbrakemotor.run(); 
+
+// for case COAST
+  airbrakemotor.moveTo(0) 
+  airbrakemotor.run()
 }  
