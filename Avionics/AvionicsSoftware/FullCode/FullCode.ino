@@ -5,7 +5,7 @@
 #include <Adafruit_Sensor.h>
 #include <Arduino_LSM6DS3.h>
 #include <math.h>
-
+#include <AccelStepper.h>
 // function Declerations
   void sensorSample();
   void filter();
@@ -36,11 +36,17 @@
     Adafruit_LPS25 lps;
   const int I2CSDA = 4;
   const int I2CSCL = 5;
-
+  
 //SPI 
 
-
+//Stepper Motor
+  AccelStepper airbrakemotor(AccelStepper::DRIVER, STEP, DIR);
+  const int STEP=23;
+  const int DIR=24;
 void setup() {
+  airbrakemotor.setMaxSpeed(X); //max speed
+  airbrakemotor.setAcceleration(X); //acceleration
+  airbrakemotor.setCurrentPosition(0)
   // put your setup code here, to run once:
   Serial.begin(115200);
   // I2C Setup
@@ -62,7 +68,8 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  airbrakemotor.moveTo(targetPos); //tell motor to move to new position
+  airbrakemotor.run(); 
 }
   void stateMachine(float tAcel, float Alti, float velY){
     static float lastTime;
